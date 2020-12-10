@@ -12,6 +12,7 @@ interface Vault:
     def initialize(
         token: address,
         governance: address,
+        rewards: address,
         name: String[64],
         symbol: String[32],
         guardian: address,
@@ -128,6 +129,7 @@ def newRelease(vault: address):
 def newVault(
     token: address,
     guardian: address,
+    rewards: address,
     nameOverride: String[64] = "",
     symbolOverride: String[32] = "",
 ) -> address:
@@ -143,6 +145,7 @@ def newVault(
         of `token`.
     @param token The token that may be deposited into this Vault.
     @param guardian The address authorized for guardian interactions.
+    @param rewards The address to use for collecting rewards.
     @param nameOverride Specify a custom Vault name. Leave empty for default choice.
     @param symbolOverride Specify a custom Vault symbol name. Leave empty for default choice.
     @return The address of the newly-deployed vault
@@ -161,7 +164,7 @@ def newVault(
         symbol = concat("yv", DetailedERC20(token).symbol())
 
     # NOTE: Must initialize the Vault atomically with deploying it
-    Vault(vault).initialize(token, msg.sender, name, symbol, guardian)
+    Vault(vault).initialize(token, msg.sender, rewards, name, symbol, guardian)
 
     self._addVault(token, vault)
 
@@ -173,6 +176,7 @@ def newExperimentalVault(
     token: address,
     governance: address = msg.sender,
     guardian: address = msg.sender,
+    rewards: address = msg.sender,
     nameOverride: String[64] = "",
     symbolOverride: String[32] = "",
 ) -> address:
@@ -190,7 +194,7 @@ def newExperimentalVault(
         symbol = concat("yv", DetailedERC20(token).symbol())
 
     # NOTE: Must initialize the Vault atomically with deploying it
-    Vault(vault).initialize(token, governance, name, symbol, guardian)
+    Vault(vault).initialize(token, governance, rewards, name, symbol, guardian)
 
     log NewExperimentalVault(token, vault, Vault(release_template).apiVersion())
 
