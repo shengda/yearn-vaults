@@ -28,7 +28,7 @@ vaults: public(HashMap[address, HashMap[uint256, address]])
 
 # 2-phase commit
 governance: public(address)
-pending_governance: address
+pendingGovernance: address
 
 tags: public(HashMap[address, String[1000000]])
 banksy: public(HashMap[address, bool])  # could be anyone
@@ -49,6 +49,9 @@ event NewExperimentalVault:
     vault: address
     api_version: String[28]
 
+event NewGovernance:
+    governance: address
+
 event VaultTagged:
     vault: address
     tag: String[1000000]
@@ -61,13 +64,14 @@ def __init__():
 @external
 def setGovernance(_governance: address):
     assert msg.sender == self.governance  # dev: unauthorized
-    self.pending_governance = _governance
+    self.pendingGovernance = _governance
 
 
 @external
 def acceptGovernance():
-    assert msg.sender == self.pending_governance  # dev: unauthorized
+    assert msg.sender == self.pendingGovernance  # dev: unauthorized
     self.governance = msg.sender
+    log NewGovernance(msg.sender)
 
 
 @view
