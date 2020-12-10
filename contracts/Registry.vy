@@ -34,13 +34,13 @@ tags: public(HashMap[address, String[1000000]])
 banksy: public(HashMap[address, bool])  # could be anyone
 
 event NewRelease:
-    event_id: indexed(uint256)
+    release_id: indexed(uint256)
     template: address
     api_version: String[28]
 
 event NewVault:
     token: indexed(address)
-    event_id: indexed(uint256)
+    deployment_id: indexed(uint256)
     vault: address
     api_version: String[28]
 
