@@ -65,6 +65,20 @@ def acceptGovernance():
     self.governance = msg.sender
 
 
+@view
+@external
+def latestRelease() -> String[28]:
+    # NOTE: Throws if there has not been a release yet
+    return Vault(self.releases[self.nextRelease - 1]).apiVersion()  # dev: No Release!
+
+
+@view
+@external
+def latestVault(token: address) -> address:
+    # NOTE: Throws if there has not been a deployment yet for this token
+    return self.vaults[token][self.nextDeployment[token] - 1]  # dev: No Vault for Token!
+
+
 @internal
 def _addVault(token: address, vault: address):
     deployment_id: uint256 = self.nextDeployment[token]  # Next id in series
