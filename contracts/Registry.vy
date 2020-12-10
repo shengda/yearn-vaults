@@ -78,14 +78,14 @@ def acceptGovernance():
 @external
 def latestRelease() -> String[28]:
     # NOTE: Throws if there has not been a release yet
-    return Vault(self.releases[self.nextRelease - 1]).apiVersion()  # dev: No Release!
+    return Vault(self.releases[self.nextRelease - 1]).apiVersion()  # dev: no release
 
 
 @view
 @external
 def latestVault(token: address) -> address:
     # NOTE: Throws if there has not been a deployment yet for this token
-    return self.vaults[token][self.nextDeployment[token] - 1]  # dev: No Vault for Token!
+    return self.vaults[token][self.nextDeployment[token] - 1]  # dev: no vault for token
 
 
 @internal
@@ -113,7 +113,7 @@ def newRelease(vault: address):
     release_id: uint256 = self.nextRelease  # Next id in series
     api_version: String[28] = Vault(vault).apiVersion()
     if release_id > 0:
-        assert Vault(self.releases[release_id - 1]).apiVersion() != api_version
+        assert Vault(self.releases[release_id - 1]).apiVersion() != api_version  # dev: same version
 
     self.releases[release_id] = vault
     self.nextRelease = release_id + 1
