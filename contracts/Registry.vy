@@ -62,9 +62,9 @@ def __init__():
 
 
 @external
-def setGovernance(_governance: address):
+def setGovernance(governance: address):
     assert msg.sender == self.governance  # dev: unauthorized
-    self.pendingGovernance = _governance
+    self.pendingGovernance = governance
 
 
 @external
